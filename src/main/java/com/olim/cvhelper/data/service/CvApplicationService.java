@@ -1,28 +1,30 @@
 package com.olim.cvhelper.data.service;
 
-import com.olim.cvhelper.data.entity.SamplePerson;
-import java.util.Optional;
-import java.util.UUID;
+import com.olim.cvhelper.data.entity.CvApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-@Service
-public class SamplePersonService {
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-    private final SamplePersonRepository repository;
+@Service
+public class CvApplicationService {
+
+    private final CvApplicationRepository repository;
 
     @Autowired
-    public SamplePersonService(SamplePersonRepository repository) {
+    public CvApplicationService(CvApplicationRepository repository) {
         this.repository = repository;
     }
 
-    public Optional<SamplePerson> get(UUID id) {
+    public Optional<CvApplication> get(UUID id) {
         return repository.findById(id);
     }
 
-    public SamplePerson update(SamplePerson entity) {
+    public CvApplication update(CvApplication entity) {
         return repository.save(entity);
     }
 
@@ -30,12 +32,16 @@ public class SamplePersonService {
         repository.deleteById(id);
     }
 
-    public Page<SamplePerson> list(Pageable pageable) {
+    public Page<CvApplication> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
     public int count() {
         return (int) repository.count();
+    }
+
+    public List<CvApplication> findAll() {
+        return repository.findAll();
     }
 
 }

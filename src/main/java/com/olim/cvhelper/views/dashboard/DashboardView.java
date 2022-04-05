@@ -1,5 +1,10 @@
 package com.olim.cvhelper.views.dashboard;
 
+import com.olim.cvhelper.data.entity.CvApplication;
+import com.olim.cvhelper.data.entity.CvApplicationStatus;
+import com.olim.cvhelper.data.entity.User;
+import com.olim.cvhelper.data.service.CvApplicationService;
+import com.olim.cvhelper.data.service.UserService;
 import com.olim.cvhelper.views.MainLayout;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -10,42 +15,49 @@ import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.data.renderer.LocalDateRenderer;
-import com.vaadin.flow.data.renderer.NumberRenderer;
+import com.vaadin.flow.data.renderer.LocalDateTimeRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import java.text.NumberFormat;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.security.RolesAllowed;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import javax.annotation.security.RolesAllowed;
-import org.apache.commons.lang3.StringUtils;
+import java.util.stream.Collectors;
 
 @PageTitle("Dashboard")
 @Route(value = "dashboard", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
+@SpringComponent
 public class DashboardView extends Div {
 
-    private GridPro<Client> grid;
-    private GridListDataView<Client> gridListDataView;
+    private GridPro<CvApplication> grid;
+    private GridListDataView<CvApplication> gridListDataView;
 
-    private Grid.Column<Client> clientColumn;
-    private Grid.Column<Client> amountColumn;
-    private Grid.Column<Client> statusColumn;
-    private Grid.Column<Client> dateColumn;
+    private Grid.Column<CvApplication> clientColumn;
+    private Grid.Column<CvApplication> statusColumn;
+    private Grid.Column<CvApplication> cvLinkColumn;
+    private Grid.Column<CvApplication> telegramUsernameColumn;
+    private Grid.Column<CvApplication> linkedInLinkColumn;
+    private Grid.Column<CvApplication> assigneeColumn;
+    private Grid.Column<CvApplication> dateColumn;
 
-    public DashboardView() {
+    private final CvApplicationService cvApplicationService;
+    private final UserService userService;
+
+    public DashboardView(CvApplicationService cvApplicationService, UserService userService) {
+        this.cvApplicationService = cvApplicationService;
+        this.userService = userService;
         addClassName("dashboard-view");
         setSizeFull();
         createGrid();
@@ -61,56 +73,126 @@ public class DashboardView extends Div {
     private void createGridComponent() {
         grid = new GridPro<>();
         grid.setSelectionMode(SelectionMode.MULTI);
-        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_COLUMN_BORDERS);
+        grid.addThemeVariants(GridVariant.MATERIAL_COLUMN_DIVIDERS, GridVariant.MATERIAL_COLUMN_DIVIDERS);
         grid.setHeight("100%");
 
-        List<Client> clients = getClients();
-        gridListDataView = grid.setItems(clients);
+        List<CvApplication> cvApplications = getCvApplications();
+        gridListDataView = grid.setItems(cvApplications);
     }
 
     private void addColumnsToGrid() {
         createClientColumn();
-        createAmountColumn();
         createStatusColumn();
+        createCvLinkColumn();
+        createLinkedInLinkColumn();
         createDateColumn();
+        createAssigneeColumn();
+        createTelegramUsernameColumn();
     }
 
-    private void createClientColumn() {
-        clientColumn = grid.addColumn(new ComponentRenderer<>(client -> {
-            HorizontalLayout hl = new HorizontalLayout();
-            hl.setAlignItems(Alignment.CENTER);
-            Image img = new Image(client.getImg(), "");
-            Span span = new Span();
-            span.setClassName("name");
-            span.setText(client.getClient());
-            hl.add(img, span);
-            return hl;
-        })).setComparator(client -> client.getClient()).setHeader("Client");
+    private void createCvLinkColumn() {
+        cvLinkColumn = grid.addColumn(new ComponentRenderer<>(CvApplication -> {
+                    HorizontalLayout hl = new HorizontalLayout();
+                    hl.setAlignItems(Alignment.CENTER);
+                    Span span = new Span();
+                    span.setClassName("Cv_link");
+                    span.setText(CvApplication.getCvLink());
+                    hl.add(span);
+                    return hl;
+                }))
+                .setComparator(CvApplication::getFullName).setHeader("CV link")
+                .setAutoWidth(true)
+                .setFlexGrow(1);
+        ;
     }
 
-    private void createAmountColumn() {
-        amountColumn = grid
-                .addEditColumn(Client::getAmount,
-                        new NumberRenderer<>(client -> client.getAmount(), NumberFormat.getCurrencyInstance(Locale.US)))
-                .text((item, newValue) -> item.setAmount(Double.parseDouble(newValue)))
-                .setComparator(client -> client.getAmount()).setHeader("Amount");
+    private void createLinkedInLinkColumn() {
+        linkedInLinkColumn = grid.addColumn(new ComponentRenderer<>(CvApplication -> {
+                    HorizontalLayout hl = new HorizontalLayout();
+                    hl.setAlignItems(Alignment.CENTER);
+                    Span span = new Span();
+                    span.setClassName("LinkedIn_link");
+                    span.setText(CvApplication.getLinkedInLink());
+                    hl.add(span);
+                    return hl;
+                }))
+                .setComparator(CvApplication::getFullName).setHeader("LinkedIn profile")
+                .setAutoWidth(true)
+                .setFlexGrow(1);
+    }
+
+    private void createTelegramUsernameColumn() {
+        telegramUsernameColumn = grid.addColumn(new ComponentRenderer<>(CvApplication -> {
+                    HorizontalLayout hl = new HorizontalLayout();
+                    hl.setAlignItems(Alignment.CENTER);
+                    Span span = new Span();
+                    span.setClassName("Telegram_username");
+                    span.setText(CvApplication.getTelegramUsername());
+                    hl.add(span);
+                    return hl;
+                }))
+                .setComparator(CvApplication::getFullName).setHeader("Telegram")
+                .setAutoWidth(true)
+                .setFlexGrow(1);
+        ;
     }
 
     private void createStatusColumn() {
-        statusColumn = grid.addEditColumn(Client::getClient, new ComponentRenderer<>(client -> {
-            Span span = new Span();
-            span.setText(client.getStatus());
-            span.getElement().setAttribute("theme", "badge " + client.getStatus().toLowerCase());
-            return span;
-        })).select((item, newValue) -> item.setStatus(newValue), Arrays.asList("Pending", "Success", "Error"))
-                .setComparator(client -> client.getStatus()).setHeader("Status");
+        statusColumn = grid.addEditColumn(CvApplication::getStatus, new ComponentRenderer<>(cvApplication -> {
+                    Span span = new Span(cvApplication.getStatus().toString());
+                    span.getElement().getThemeList().add("badge " + cvApplication.getStatus().getColor());
+                    return span;
+                })).select((item, newValue) -> {
+                    item.setStatus(CvApplicationStatus.valueOf(newValue));
+                    cvApplicationService.update(item);
+                }, CvApplicationStatus.getValues())
+                .setComparator(CvApplication::getStatus).setHeader("Status")
+                .setAutoWidth(true)
+                .setFlexGrow(1);
     }
+
+    private void createAssigneeColumn() {
+        List<User> admins = userService.loadAll();
+        assigneeColumn = grid.addEditColumn((CvApplication::getAssignee),
+                        new ComponentRenderer<>(cvApplication -> new Span(cvApplication.getAssignee().getName())))
+                .select((item, newValue) -> {
+                    User user = userService.get(newValue);
+                    item.setAssignee(user);
+                    cvApplicationService.update(item);
+                }, admins.stream().map(User::getName).collect(Collectors.toList()))
+                .setComparator(cvApplication -> cvApplication.getAssignee().getName()).setHeader("Assignee")
+                .setAutoWidth(true)
+                .setFlexGrow(1);
+        ;
+    }
+
+    private void createClientColumn() {
+        clientColumn = grid.addColumn(new ComponentRenderer<>(CvApplication -> {
+                    HorizontalLayout hl = new HorizontalLayout();
+                    hl.setAlignItems(Alignment.CENTER);
+                    Span span = new Span();
+                    span.setClassName("name");
+                    span.setText(CvApplication.getFullName());
+                    hl.add(span);
+                    return hl;
+                }))
+                .setComparator(CvApplication::getFullName).setHeader("Client")
+                .setAutoWidth(true)
+                .setFlexGrow(1);
+        ;
+    }
+
+
 
     private void createDateColumn() {
         dateColumn = grid
-                .addColumn(new LocalDateRenderer<>(client -> LocalDate.parse(client.getDate()),
-                        DateTimeFormatter.ofPattern("M/d/yyyy")))
-                .setComparator(client -> client.getDate()).setHeader("Date").setWidth("180px").setFlexGrow(0);
+                .addColumn(new LocalDateTimeRenderer<>(CvApplication::getUpdatedAt,
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")))
+                .setComparator(CvApplication::getUpdatedAt).setHeader("Date")
+                .setWidth("180px")
+                .setAutoWidth(true)
+                .setFlexGrow(1);
+        ;
     }
 
     private void addFiltersToGrid() {
@@ -122,25 +204,25 @@ public class DashboardView extends Div {
         clientFilter.setWidth("100%");
         clientFilter.setValueChangeMode(ValueChangeMode.EAGER);
         clientFilter.addValueChangeListener(event -> gridListDataView
-                .addFilter(client -> StringUtils.containsIgnoreCase(client.getClient(), clientFilter.getValue())));
+                .addFilter(cvApplication -> StringUtils.containsIgnoreCase(cvApplication.getFullName(), clientFilter.getValue())));
         filterRow.getCell(clientColumn).setComponent(clientFilter);
 
-        TextField amountFilter = new TextField();
-        amountFilter.setPlaceholder("Filter");
-        amountFilter.setClearButtonVisible(true);
-        amountFilter.setWidth("100%");
-        amountFilter.setValueChangeMode(ValueChangeMode.EAGER);
-        amountFilter.addValueChangeListener(event -> gridListDataView.addFilter(client -> StringUtils
-                .containsIgnoreCase(Double.toString(client.getAmount()), amountFilter.getValue())));
-        filterRow.getCell(amountColumn).setComponent(amountFilter);
+        TextField assigneeFilter = new TextField();
+        assigneeFilter.setPlaceholder("Filter");
+        assigneeFilter.setClearButtonVisible(true);
+        assigneeFilter.setWidth("100%");
+        assigneeFilter.setValueChangeMode(ValueChangeMode.EAGER);
+        assigneeFilter.addValueChangeListener(event -> gridListDataView.addFilter(cvApplication -> StringUtils
+                .containsIgnoreCase(cvApplication.getAssignee().getName(), assigneeFilter.getValue())));
+        filterRow.getCell(assigneeColumn).setComponent(assigneeFilter);
 
         ComboBox<String> statusFilter = new ComboBox<>();
-        statusFilter.setItems(Arrays.asList("Pending", "Success", "Error"));
+        statusFilter.setItems(CvApplicationStatus.getValues());
         statusFilter.setPlaceholder("Filter");
         statusFilter.setClearButtonVisible(true);
         statusFilter.setWidth("100%");
         statusFilter.addValueChangeListener(
-                event -> gridListDataView.addFilter(client -> areStatusesEqual(client, statusFilter)));
+                event -> gridListDataView.addFilter(CvApplication -> areStatusesEqual(CvApplication, statusFilter)));
         filterRow.getCell(statusColumn).setComponent(statusFilter);
 
         DatePicker dateFilter = new DatePicker();
@@ -148,58 +230,27 @@ public class DashboardView extends Div {
         dateFilter.setClearButtonVisible(true);
         dateFilter.setWidth("100%");
         dateFilter.addValueChangeListener(
-                event -> gridListDataView.addFilter(client -> areDatesEqual(client, dateFilter)));
+                event -> gridListDataView.addFilter(CvApplication -> areDatesEqual(CvApplication, dateFilter)));
         filterRow.getCell(dateColumn).setComponent(dateFilter);
     }
 
-    private boolean areStatusesEqual(Client client, ComboBox<String> statusFilter) {
+    private boolean areStatusesEqual(CvApplication cvApplication, ComboBox<String> statusFilter) {
         String statusFilterValue = statusFilter.getValue();
         if (statusFilterValue != null) {
-            return StringUtils.equals(client.getStatus(), statusFilterValue);
+            return StringUtils.equals(cvApplication.getStatus().toString(), statusFilterValue);
         }
         return true;
     }
 
-    private boolean areDatesEqual(Client client, DatePicker dateFilter) {
+    private boolean areDatesEqual(CvApplication cvApplication, DatePicker dateFilter) {
         LocalDate dateFilterValue = dateFilter.getValue();
         if (dateFilterValue != null) {
-            LocalDate clientDate = LocalDate.parse(client.getDate());
-            return dateFilterValue.equals(clientDate);
+            return dateFilterValue.equals(cvApplication.getUpdatedAt().toLocalDate());
         }
         return true;
     }
 
-    private List<Client> getClients() {
-        return Arrays.asList(
-                createClient(4957, "https://randomuser.me/api/portraits/women/42.jpg", "Amarachi Nkechi", 47427.0,
-                        "Success", "2019-05-09"),
-                createClient(675, "https://randomuser.me/api/portraits/women/24.jpg", "Bonelwa Ngqawana", 70503.0,
-                        "Success", "2019-05-09"),
-                createClient(6816, "https://randomuser.me/api/portraits/men/42.jpg", "Debashis Bhuiyan", 58931.0,
-                        "Success", "2019-05-07"),
-                createClient(5144, "https://randomuser.me/api/portraits/women/76.jpg", "Jacqueline Asong", 25053.0,
-                        "Pending", "2019-04-25"),
-                createClient(9800, "https://randomuser.me/api/portraits/men/24.jpg", "Kobus van de Vegte", 7319.0,
-                        "Pending", "2019-04-22"),
-                createClient(3599, "https://randomuser.me/api/portraits/women/94.jpg", "Mattie Blooman", 18441.0,
-                        "Error", "2019-04-17"),
-                createClient(3989, "https://randomuser.me/api/portraits/men/76.jpg", "Oea Romana", 33376.0, "Pending",
-                        "2019-04-17"),
-                createClient(1077, "https://randomuser.me/api/portraits/men/94.jpg", "Stephanus Huggins", 75774.0,
-                        "Success", "2019-02-26"),
-                createClient(8942, "https://randomuser.me/api/portraits/men/16.jpg", "Torsten Paulsson", 82531.0,
-                        "Pending", "2019-02-21"));
-    }
-
-    private Client createClient(int id, String img, String client, double amount, String status, String date) {
-        Client c = new Client();
-        c.setId(id);
-        c.setImg(img);
-        c.setClient(client);
-        c.setAmount(amount);
-        c.setStatus(status);
-        c.setDate(date);
-
-        return c;
+    private List<CvApplication> getCvApplications() {
+        return cvApplicationService.findAll();
     }
 };

@@ -87,7 +87,7 @@ public class MainLayout extends AppLayout {
         Div layout = new Div();
         layout.addClassNames("flex", "h-xl", "items-center", "px-l");
 
-        H1 appName = new H1("Cv Helper");
+        H1 appName = new H1("Help CV system (ISRAEL)");
         appName.addClassNames("my-0", "me-auto", "text-l");
         layout.add(appName);
 
@@ -95,7 +95,7 @@ public class MainLayout extends AppLayout {
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
 
-            Avatar avatar = new Avatar(user.getName(), user.getProfilePictureUrl());
+            Avatar avatar = new Avatar(user.getName());
             avatar.addClassNames("me-xs");
 
             ContextMenu userMenu = new ContextMenu(avatar);
@@ -107,7 +107,7 @@ public class MainLayout extends AppLayout {
             Span name = new Span(user.getName());
             name.addClassNames("font-medium", "text-s", "text-secondary");
 
-            layout.add(avatar, name);
+            layout.add(name);
         } else {
             Anchor loginLink = new Anchor("login", "Sign in");
             layout.add(loginLink);
@@ -138,7 +138,7 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Chat", "la la-comments", ChatView.class), //
 
-                new MenuItemInfo("User form", "la la-user", UserformView.class), //
+//                new MenuItemInfo("User form", "la la-user", UserformView.class), //
 
         };
     }

@@ -1,12 +1,14 @@
 package com.olim.cvhelper.data.service;
 
 import com.olim.cvhelper.data.entity.User;
-import java.util.Optional;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -22,6 +24,10 @@ public class UserService {
         return repository.findById(id);
     }
 
+    public User get(String name) {
+        return repository.findByName(name);
+    }
+
     public User update(User entity) {
         return repository.save(entity);
     }
@@ -32,6 +38,10 @@ public class UserService {
 
     public Page<User> list(Pageable pageable) {
         return repository.findAll(pageable);
+    }
+
+    public List<User> loadAll() {
+        return repository.findAll();
     }
 
     public int count() {

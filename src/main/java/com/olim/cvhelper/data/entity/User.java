@@ -5,23 +5,22 @@ import com.olim.cvhelper.data.Role;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "application_user")
+@Table(name = "application_users")
 public class User extends AbstractEntity {
 
     private String username;
     private String name;
     @JsonIgnore
-    private String hashedPassword;
+    private String password;
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Role> roles;
-    @Lob
-    private String profilePictureUrl;
+    private Role role;
 
 }

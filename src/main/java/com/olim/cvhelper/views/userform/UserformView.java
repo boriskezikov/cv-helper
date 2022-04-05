@@ -1,7 +1,7 @@
 package com.olim.cvhelper.views.userform;
 
-import com.olim.cvhelper.data.entity.SamplePerson;
-import com.olim.cvhelper.data.service.SamplePersonService;
+import com.olim.cvhelper.data.entity.CvApplication;
+import com.olim.cvhelper.data.service.CvApplicationService;
 import com.olim.cvhelper.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -29,19 +29,19 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @Uses(Icon.class)
 public class UserformView extends Div {
 
-    private TextField firstName = new TextField("First name");
-    private TextField lastName = new TextField("Last name");
-    private EmailField email = new EmailField("Email address");
-    private DatePicker dateOfBirth = new DatePicker("Birthday");
-    private PhoneNumberField phone = new PhoneNumberField("Phone number");
-    private TextField occupation = new TextField("Occupation");
+    private final TextField firstName = new TextField("First name");
+    private final TextField lastName = new TextField("Last name");
+    private final EmailField email = new EmailField("Email address");
+    private final DatePicker dateOfBirth = new DatePicker("Birthday");
+    private final PhoneNumberField phone = new PhoneNumberField("Phone number");
+    private final TextField occupation = new TextField("Occupation");
 
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
+    private final Button cancel = new Button("Cancel");
+    private final Button save = new Button("Save");
 
-    private Binder<SamplePerson> binder = new Binder(SamplePerson.class);
+    private final Binder<CvApplication> binder = new Binder<>(CvApplication.class);
 
-    public UserformView(SamplePersonService personService) {
+    public UserformView(CvApplicationService personService) {
         addClassName("userform-view");
 
         add(createTitle());
@@ -60,7 +60,7 @@ public class UserformView extends Div {
     }
 
     private void clearForm() {
-        binder.setBean(new SamplePerson());
+        binder.setBean(new CvApplication());
     }
 
     private Component createTitle() {
