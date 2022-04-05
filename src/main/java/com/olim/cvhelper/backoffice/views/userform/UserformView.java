@@ -1,8 +1,8 @@
-package com.olim.cvhelper.views.userform;
+package com.olim.cvhelper.backoffice.views.userform;
 
-import com.olim.cvhelper.data.entity.CvApplication;
-import com.olim.cvhelper.data.service.CvApplicationService;
-import com.olim.cvhelper.views.MainLayout;
+import com.olim.cvhelper.backoffice.entity.CvApplication;
+import com.olim.cvhelper.backoffice.service.CvApplicationService;
+import com.olim.cvhelper.backoffice.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;

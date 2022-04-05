@@ -1,4 +1,4 @@
-package com.olim.cvhelper.data.entity;
+package com.olim.cvhelper.backoffice.entity;
 
 import java.util.UUID;
 import javax.persistence.GeneratedValue;

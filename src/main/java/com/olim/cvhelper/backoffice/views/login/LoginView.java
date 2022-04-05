@@ -1,4 +1,4 @@
-package com.olim.cvhelper.views.login;
+package com.olim.cvhelper.backoffice.views.login;
 
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;

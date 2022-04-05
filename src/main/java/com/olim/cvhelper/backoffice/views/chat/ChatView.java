@@ -1,6 +1,6 @@
-package com.olim.cvhelper.views.chat;
+package com.olim.cvhelper.backoffice.views.chat;
 
-import com.olim.cvhelper.views.MainLayout;
+import com.olim.cvhelper.backoffice.views.MainLayout;
 import com.vaadin.collaborationengine.CollaborationMessageInput;
 import com.vaadin.collaborationengine.CollaborationMessageList;
 import com.vaadin.collaborationengine.UserInfo;

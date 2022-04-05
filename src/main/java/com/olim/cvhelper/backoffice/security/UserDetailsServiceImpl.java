@@ -1,7 +1,7 @@
-package com.olim.cvhelper.security;
+package com.olim.cvhelper.backoffice.security;
 
-import com.olim.cvhelper.data.entity.User;
-import com.olim.cvhelper.data.service.UserRepository;
+import com.olim.cvhelper.backoffice.entity.User;
+import com.olim.cvhelper.backoffice.service.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

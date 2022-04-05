@@ -1,7 +1,6 @@
-package com.olim.cvhelper.data.entity;
+package com.olim.cvhelper.backoffice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.olim.cvhelper.data.Role;
 import lombok.Getter;
 import lombok.Setter;
 

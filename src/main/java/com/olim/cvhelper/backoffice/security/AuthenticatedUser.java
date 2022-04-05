@@ -1,7 +1,7 @@
-package com.olim.cvhelper.security;
+package com.olim.cvhelper.backoffice.security;
 
-import com.olim.cvhelper.data.entity.User;
-import com.olim.cvhelper.data.service.UserRepository;
+import com.olim.cvhelper.backoffice.entity.User;
+import com.olim.cvhelper.backoffice.service.UserRepository;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinServletRequest;
 import java.util.Optional;

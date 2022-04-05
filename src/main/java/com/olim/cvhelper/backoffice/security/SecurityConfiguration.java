@@ -1,6 +1,6 @@
-package com.olim.cvhelper.security;
+package com.olim.cvhelper.backoffice.security;
 
-import com.olim.cvhelper.views.login.LoginView;
+import com.olim.cvhelper.backoffice.views.login.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.olim.cvhelper.data.entity;
+package com.olim.cvhelper.backoffice.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

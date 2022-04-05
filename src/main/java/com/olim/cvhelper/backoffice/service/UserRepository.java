@@ -1,6 +1,6 @@
-package com.olim.cvhelper.data.service;
+package com.olim.cvhelper.backoffice.service;
 
-import com.olim.cvhelper.data.entity.User;
+import com.olim.cvhelper.backoffice.entity.User;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 

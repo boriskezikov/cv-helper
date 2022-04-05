@@ -1,6 +1,6 @@
-package com.olim.cvhelper.data.service;
+package com.olim.cvhelper.backoffice.service;
 
-import com.olim.cvhelper.data.entity.CvApplication;
+import com.olim.cvhelper.backoffice.entity.CvApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

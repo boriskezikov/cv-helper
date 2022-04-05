@@ -1,11 +1,11 @@
-package com.olim.cvhelper.views.dashboard;
+package com.olim.cvhelper.backoffice.views.dashboard;
 
-import com.olim.cvhelper.data.entity.CvApplication;
-import com.olim.cvhelper.data.entity.CvApplicationStatus;
-import com.olim.cvhelper.data.entity.User;
-import com.olim.cvhelper.data.service.CvApplicationService;
-import com.olim.cvhelper.data.service.UserService;
-import com.olim.cvhelper.views.MainLayout;
+import com.olim.cvhelper.backoffice.entity.CvApplication;
+import com.olim.cvhelper.backoffice.entity.CvApplicationStatus;
+import com.olim.cvhelper.backoffice.entity.User;
+import com.olim.cvhelper.backoffice.service.CvApplicationService;
+import com.olim.cvhelper.backoffice.service.UserService;
+import com.olim.cvhelper.backoffice.views.MainLayout;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
@@ -14,6 +14,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.gridpro.GridPro;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
@@ -23,6 +24,7 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.renderer.LocalDateTimeRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -39,6 +41,7 @@ import java.util.stream.Collectors;
 @RouteAlias(value = "", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 @SpringComponent
+@PreserveOnRefresh
 public class DashboardView extends Div {
 
     private GridPro<CvApplication> grid;
@@ -91,13 +94,14 @@ public class DashboardView extends Div {
     }
 
     private void createCvLinkColumn() {
-        cvLinkColumn = grid.addColumn(new ComponentRenderer<>(CvApplication -> {
+        cvLinkColumn = grid.addColumn(new ComponentRenderer<>(cvApplication -> {
                     HorizontalLayout hl = new HorizontalLayout();
                     hl.setAlignItems(Alignment.CENTER);
-                    Span span = new Span();
-                    span.setClassName("Cv_link");
-                    span.setText(CvApplication.getCvLink());
-                    hl.add(span);
+                    Anchor anchor = new Anchor();
+                    anchor.setHref(cvApplication.getCvLink());
+                    anchor.setText(cvApplication.getCvLink());
+                    anchor.setClassName("Cv_link");
+                    hl.add(anchor);
                     return hl;
                 }))
                 .setComparator(CvApplication::getFullName).setHeader("CV link")
@@ -107,13 +111,14 @@ public class DashboardView extends Div {
     }
 
     private void createLinkedInLinkColumn() {
-        linkedInLinkColumn = grid.addColumn(new ComponentRenderer<>(CvApplication -> {
+        linkedInLinkColumn = grid.addColumn(new ComponentRenderer<>(cvApplication -> {
                     HorizontalLayout hl = new HorizontalLayout();
                     hl.setAlignItems(Alignment.CENTER);
-                    Span span = new Span();
-                    span.setClassName("LinkedIn_link");
-                    span.setText(CvApplication.getLinkedInLink());
-                    hl.add(span);
+                    Anchor anchor = new Anchor();
+                    anchor.setHref(cvApplication.getLinkedInLink());
+                    anchor.setText(cvApplication.getLinkedInLink());
+                    anchor.setClassName("LinkedIn_link");
+                    hl.add(anchor);
                     return hl;
                 }))
                 .setComparator(CvApplication::getFullName).setHeader("LinkedIn profile")
@@ -122,13 +127,14 @@ public class DashboardView extends Div {
     }
 
     private void createTelegramUsernameColumn() {
-        telegramUsernameColumn = grid.addColumn(new ComponentRenderer<>(CvApplication -> {
+        telegramUsernameColumn = grid.addColumn(new ComponentRenderer<>(cvApplication -> {
                     HorizontalLayout hl = new HorizontalLayout();
                     hl.setAlignItems(Alignment.CENTER);
-                    Span span = new Span();
-                    span.setClassName("Telegram_username");
-                    span.setText(CvApplication.getTelegramUsername());
-                    hl.add(span);
+                    Anchor anchor = new Anchor();
+                    anchor.setHref("https://t.me/" + cvApplication.getTelegramUsername());
+                    anchor.setText("Click me");
+                    anchor.setClassName("Telegram_username");
+                    hl.add(anchor);
                     return hl;
                 }))
                 .setComparator(CvApplication::getFullName).setHeader("Telegram")

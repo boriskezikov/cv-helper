@@ -29,3 +29,10 @@ spring:
 
 server:
   port: ${PORT:5000}
+
+telegram:
+  bot:
+    name: test
+    token: test
+    admin: kezikoff
+    webhook-path: test

@@ -1,25 +1,18 @@
-package com.olim.cvhelper.views;
+package com.olim.cvhelper.backoffice.views;
 
-import com.olim.cvhelper.data.entity.User;
-import com.olim.cvhelper.security.AuthenticatedUser;
-import com.olim.cvhelper.views.chat.ChatView;
-import com.olim.cvhelper.views.dashboard.DashboardView;
-import com.olim.cvhelper.views.userform.UserformView;
+import com.olim.cvhelper.backoffice.entity.User;
+import com.olim.cvhelper.backoffice.security.AuthenticatedUser;
+import com.olim.cvhelper.backoffice.views.chat.ChatView;
+import com.olim.cvhelper.backoffice.views.dashboard.DashboardView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.dependency.NpmPackage;
-import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.component.html.ListItem;
-import com.vaadin.flow.component.html.Nav;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.html.UnorderedList;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
+
 import java.util.Optional;
 
 /**
