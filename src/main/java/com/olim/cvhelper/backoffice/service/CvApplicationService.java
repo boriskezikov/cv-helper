@@ -1,6 +1,7 @@
 package com.olim.cvhelper.backoffice.service;
 
 import com.olim.cvhelper.backoffice.entity.CvApplication;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,14 +12,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class CvApplicationService {
 
     private final CvApplicationRepository repository;
-
-    @Autowired
-    public CvApplicationService(CvApplicationRepository repository) {
-        this.repository = repository;
-    }
 
     public Optional<CvApplication> get(UUID id) {
         return repository.findById(id);

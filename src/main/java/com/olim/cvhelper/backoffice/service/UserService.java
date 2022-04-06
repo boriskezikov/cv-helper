@@ -1,7 +1,7 @@
 package com.olim.cvhelper.backoffice.service;
 
 import com.olim.cvhelper.backoffice.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,14 +11,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository repository;
 
-    @Autowired
-    public UserService(UserRepository repository) {
-        this.repository = repository;
-    }
 
     public Optional<User> get(UUID id) {
         return repository.findById(id);
@@ -30,6 +27,10 @@ public class UserService {
 
     public User update(User entity) {
         return repository.save(entity);
+    }
+
+    public User pickRandom() {
+        return repository.pickRandomUser();
     }
 
     public void delete(UUID id) {
