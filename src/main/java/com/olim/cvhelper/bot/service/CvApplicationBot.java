@@ -1,5 +1,6 @@
 package com.olim.cvhelper.bot.service;
 
+import com.olim.cvhelper.bot.commands.HelpCommand;
 import com.olim.cvhelper.bot.commands.StartCommand;
 import com.olim.cvhelper.bot.config.BotConfig;
 import com.olim.cvhelper.bot.handlers.AbstractHandler;
@@ -24,11 +25,13 @@ public class CvApplicationBot extends TelegramLongPollingCommandBot {
     private final BotConfig botConfig;
     private final StateRepository stateRepository;
     private final StartCommand startCommand;
+    private final HelpCommand helpCommand;
     private final HandlerOrchestrator handlerOrchestrator;
 
     @PostConstruct
     public void init() {
         register(startCommand);
+        register(helpCommand);
     }
 
 

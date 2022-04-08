@@ -2,9 +2,9 @@ package com.olim.cvhelper.bot.commands;
 
 import com.olim.cvhelper.bot.handlers.AbstractHandler;
 import com.olim.cvhelper.bot.handlers.HandlerOrchestrator;
-import com.olim.cvhelper.bot.util.TextConstants;
 import com.olim.cvhelper.bot.model.State;
 import com.olim.cvhelper.bot.repository.StateRepository;
+import com.olim.cvhelper.bot.util.TextConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
