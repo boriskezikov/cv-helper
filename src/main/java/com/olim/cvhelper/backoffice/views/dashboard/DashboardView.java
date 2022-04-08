@@ -24,10 +24,10 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.renderer.LocalDateTimeRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.annotation.SpringComponent;
+import com.vaadin.flow.spring.annotation.UIScope;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.security.RolesAllowed;
@@ -36,12 +36,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@UIScope
 @PageTitle("Dashboard")
 @Route(value = "dashboard", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 @SpringComponent
-@PreserveOnRefresh
 public class DashboardView extends Div {
 
     private GridPro<CvApplication> grid;
@@ -81,6 +81,9 @@ public class DashboardView extends Div {
 
         List<CvApplication> cvApplications = getCvApplications();
         gridListDataView = grid.setItems(cvApplications);
+        grid.getListDataView().addItemCountChangeListener((c) -> {
+
+        });
     }
 
     private void addColumnsToGrid() {
@@ -187,7 +190,6 @@ public class DashboardView extends Div {
                 .setFlexGrow(1);
         ;
     }
-
 
 
     private void createDateColumn() {

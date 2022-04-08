@@ -1,6 +1,8 @@
 package com.olim.cvhelper.backoffice.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,8 +34,10 @@ public class CvApplication extends AbstractEntity {
     @JoinColumn(name = "assignee")
     private User assignee;
 
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
 }

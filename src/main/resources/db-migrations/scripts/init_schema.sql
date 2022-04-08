@@ -17,8 +17,8 @@ create table if not exists cv_applications
     telegram_username varchar(255)            not null,
     status            varchar(255)            not null,
     assignee          uuid,
-    created_at        timestamp default now() not null,
-    updated_at        timestamp default now() not null,
+    created_at        timestamp default now(),
+    updated_at        timestamp default now(),
     to_remove         boolean   default false not null,
     foreign key (assignee) references application_users (id)
 );

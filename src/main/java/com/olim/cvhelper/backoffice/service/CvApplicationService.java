@@ -1,8 +1,9 @@
 package com.olim.cvhelper.backoffice.service;
 
 import com.olim.cvhelper.backoffice.entity.CvApplication;
+import com.olim.cvhelper.backoffice.events.NewApplicationEvent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CvApplicationService {
 
+    private final ApplicationEventPublisher applicationEventPublisher;
+
     private final CvApplicationRepository repository;
 
     public Optional<CvApplication> get(UUID id) {
@@ -22,7 +25,9 @@ public class CvApplicationService {
     }
 
     public CvApplication update(CvApplication entity) {
-        return repository.save(entity);
+        var r = repository.save(entity);
+        applicationEventPublisher.publishEvent(new NewApplicationEvent(r));
+        return r;
     }
 
     public void delete(UUID id) {

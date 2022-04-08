@@ -2,9 +2,8 @@ package com.olim.cvhelper.bot.commands;
 
 import com.olim.cvhelper.bot.handlers.AbstractHandler;
 import com.olim.cvhelper.bot.handlers.HandlerOrchestrator;
-import com.olim.cvhelper.bot.handlers.TextConstants;
+import com.olim.cvhelper.bot.util.TextConstants;
 import com.olim.cvhelper.bot.model.State;
-import static com.olim.cvhelper.bot.model.StateOrder.USERNAME;
 import com.olim.cvhelper.bot.repository.StateRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

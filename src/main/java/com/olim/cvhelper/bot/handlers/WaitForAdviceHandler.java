@@ -1,8 +1,8 @@
 package com.olim.cvhelper.bot.handlers;
 
 import com.olim.cvhelper.bot.config.BotState;
-import static com.olim.cvhelper.bot.handlers.TextConstants.DO_NOT_UNDERSTAND;
-import static com.olim.cvhelper.bot.handlers.TextConstants.WAIT_FOR_HELP;
+import static com.olim.cvhelper.bot.util.TextConstants.DO_NOT_UNDERSTAND;
+import static com.olim.cvhelper.bot.util.TextConstants.WAIT_FOR_HELP;
 import com.olim.cvhelper.bot.model.State;
 import com.olim.cvhelper.bot.model.StateOrder;
 import com.olim.cvhelper.bot.repository.StateRepository;

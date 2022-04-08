@@ -2,7 +2,7 @@ package com.olim.cvhelper.bot.handlers;
 
 import com.olim.cvhelper.bot.config.BotState;
 import com.olim.cvhelper.bot.exception.IllegalLinkedInProfileException;
-import static com.olim.cvhelper.bot.handlers.TextConstants.*;
+import static com.olim.cvhelper.bot.util.TextConstants.*;
 import com.olim.cvhelper.bot.model.State;
 import com.olim.cvhelper.bot.model.StateOrder;
 import com.olim.cvhelper.bot.repository.StateRepository;

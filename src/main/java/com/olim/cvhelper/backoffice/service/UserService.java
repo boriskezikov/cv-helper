@@ -1,6 +1,7 @@
 package com.olim.cvhelper.backoffice.service;
 
 import com.olim.cvhelper.backoffice.entity.User;
+import com.olim.cvhelper.bot.exception.NoUserRegisteredException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +31,7 @@ public class UserService {
     }
 
     public User pickRandom() {
-        return repository.pickRandomUser();
+        return repository.pickRandomUser().orElseThrow(NoUserRegisteredException::new);
     }
 
     public void delete(UUID id) {
