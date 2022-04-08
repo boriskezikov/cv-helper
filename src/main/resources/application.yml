@@ -32,7 +32,5 @@ server:
 
 telegram:
   bot:
-    name: test
-    token: test
-    admin: kezikoff
-    webhook-path: test
+    name: ${BOT_NAME}
+    token: ${BOT_TOKEN}

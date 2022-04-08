@@ -13,10 +13,4 @@ public class BotConfig {
 
     @Value("${telegram.bot.token}")
     private String token;
-
-    @Value("${telegram.bot.admin}")
-    private String admin;
-
-    @Value("${telegram.bot.webhook-path}")
-    private String webhookPath;
 }
