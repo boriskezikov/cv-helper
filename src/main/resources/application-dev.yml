@@ -32,3 +32,17 @@ telegram:
     name: cv_helper_bot
     token: 5115367582:AAEIQ4sDhCzKv7nNel18fUQf5sI2h43M4Xo
     admin: kezikoff
+
+admin:
+  first:
+    user: ${ADMIN_FIRST_USER:123}
+    login: ${ADMIN_FIRST_LOGIN:123}
+    pass: ${ADMIN_FIRST_PASSWORD:123}
+  second:
+    user: ${ADMIN_SECOND_USER:1234}
+    login: ${ADMIN_SECOND_LOGIN:1234}
+    pass: ${ADMIN_SECOND_PASSWORD:1234}
+  third:
+    user: ${ADMIN_THIRD_USER:12}
+    login: ${ADMIN_THIRD_LOGIN:12}
+    pass: ${ADMIN_THIRD_PASSWORD:12}

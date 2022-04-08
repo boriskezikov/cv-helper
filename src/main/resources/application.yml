@@ -36,4 +36,16 @@ telegram:
     token: ${BOT_TOKEN}
 
 admin:
-  pass: ${ADMIN_PASS}
+  first:
+    user: ${ADMIN_FIRST_USER}
+    login: ${ADMIN_FIRST_LOGIN}
+    pass: ${ADMIN_FIRST_PASSWORD}
+  second:
+    user: ${ADMIN_SECOND_USER}
+    login: ${ADMIN_SECOND_LOGIN}
+    pass: ${ADMIN_SECOND_PASSWORD}
+  third:
+    user: ${ADMIN_THIRD_USER}
+    login: ${ADMIN_THIRD_LOGIN}
+    pass: ${ADMIN_THIRD_PASSWORD}
+
