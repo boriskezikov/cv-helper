@@ -26,3 +26,9 @@ logging:
     org.atmosphere: warn
 server:
   port: 8080
+
+telegram:
+  bot:
+    name: cv_helper_bot
+    token: 5115367582:AAEIQ4sDhCzKv7nNel18fUQf5sI2h43M4Xo
+    admin: kezikoff
