@@ -34,3 +34,6 @@ telegram:
   bot:
     name: ${BOT_NAME}
     token: ${BOT_TOKEN}
+
+admin:
+  pass: ${ADMIN_PASS}
