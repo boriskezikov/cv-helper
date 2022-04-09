@@ -60,3 +60,6 @@ Once the Docker image is correctly built, you can test it locally using
 ```
 docker run -p 8080:8080 cvhelper:latest
 ```
+mvn clean install
+mvn package -Pproduction
+heroku deploy:jar target/cvhelper-1.0-SNAPSHOT.jar --app whispering-bayou-80308
