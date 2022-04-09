@@ -29,17 +29,17 @@ public class UserServiceCreds {
         userRepository.save(admin);
 
         User admin2 = new User();
-        admin.setName(userCredsConfig.getUsername2());
-        admin.setUsername(userCredsConfig.getLogin2());
-        admin.setPassword(passwordEncoder.encode(userCredsConfig.getPassword2()));
-        admin.setRole(Role.ADMIN);
+        admin2.setName(userCredsConfig.getUsername2());
+        admin2.setUsername(userCredsConfig.getLogin2());
+        admin2.setPassword(passwordEncoder.encode(userCredsConfig.getPassword2()));
+        admin2.setRole(Role.ADMIN);
         userRepository.save(admin2);
 
         User admin3 = new User();
-        admin.setName(userCredsConfig.getUsername3());
-        admin.setUsername(userCredsConfig.getLogin3());
-        admin.setPassword(passwordEncoder.encode(userCredsConfig.getPassword3()));
-        admin.setRole(Role.ADMIN);
+        admin3.setName(userCredsConfig.getUsername3());
+        admin3.setUsername(userCredsConfig.getLogin3());
+        admin3.setPassword(passwordEncoder.encode(userCredsConfig.getPassword3()));
+        admin3.setRole(Role.ADMIN);
         userRepository.save(admin3);
     }
 }
