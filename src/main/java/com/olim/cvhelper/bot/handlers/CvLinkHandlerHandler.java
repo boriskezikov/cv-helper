@@ -50,7 +50,7 @@ public class CvLinkHandlerHandler extends AbstractHandler {
         if (stateOptional.isPresent()) {
             State state = stateOptional.get();
             state.getStateData().setCvLink(cvLink);
-            state.setStateId(StateOrder.CV_LINK.getOrder());
+            state.setStateId(StateOrder.WAIT_FOR_HELP.getOrder());
             State finalState = stateRepository.save(state);
             CvApplication cvApplication = toCvApplication(chatId, finalState);
             cvApplicationService.update(cvApplication);
