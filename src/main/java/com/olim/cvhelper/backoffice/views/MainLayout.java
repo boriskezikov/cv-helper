@@ -129,7 +129,7 @@ public class MainLayout extends AppLayout {
         return new MenuItemInfo[]{ //
                 new MenuItemInfo("Dashboard", "lab la-telegram", DashboardView.class), //
 
-                new MenuItemInfo("Chat", "la la-comments", ChatView.class), //
+//                new MenuItemInfo("Chat", "la la-comments", ChatView.class), //
 
 //                new MenuItemInfo("User form", "la la-user", UserformView.class), //
 

@@ -1,0 +1,1 @@
+alter table cv_applications add column question text;

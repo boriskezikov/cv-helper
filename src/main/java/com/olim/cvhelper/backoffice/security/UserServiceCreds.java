@@ -21,6 +21,9 @@ public class UserServiceCreds {
 
     @PostConstruct
     public void createUser() {
+        if (userRepository.count() == 3) {
+            return;
+        }
         User admin = new User();
         admin.setName(userCredsConfig.getUsername1());
         admin.setUsername(userCredsConfig.getLogin1());

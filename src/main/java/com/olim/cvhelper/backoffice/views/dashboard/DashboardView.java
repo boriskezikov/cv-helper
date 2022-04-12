@@ -12,6 +12,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.SelectionMode;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.HeaderRow;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.html.Anchor;
@@ -22,6 +23,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.renderer.LocalDateTimeRenderer;
+import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -34,6 +36,7 @@ import javax.annotation.security.RolesAllowed;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @UIScope
@@ -52,6 +55,7 @@ public class DashboardView extends Div {
     private Grid.Column<CvApplication> cvLinkColumn;
     private Grid.Column<CvApplication> telegramUsernameColumn;
     private Grid.Column<CvApplication> linkedInLinkColumn;
+    private Grid.Column<CvApplication> questionField;
     private Grid.Column<CvApplication> assigneeColumn;
     private Grid.Column<CvApplication> dateColumn;
 
@@ -75,15 +79,14 @@ public class DashboardView extends Div {
 
     private void createGridComponent() {
         grid = new GridPro<>();
+        grid.setHeightFull();
         grid.setSelectionMode(SelectionMode.MULTI);
         grid.addThemeVariants(GridVariant.MATERIAL_COLUMN_DIVIDERS, GridVariant.MATERIAL_COLUMN_DIVIDERS);
-        grid.setHeight("100%");
 
         List<CvApplication> cvApplications = getCvApplications();
         gridListDataView = grid.setItems(cvApplications);
-        grid.getListDataView().addItemCountChangeListener((c) -> {
+        createContextMenu();
 
-        });
     }
 
     private void addColumnsToGrid() {
@@ -94,6 +97,23 @@ public class DashboardView extends Div {
         createDateColumn();
         createAssigneeColumn();
         createTelegramUsernameColumn();
+        createQuestionColumn();
+    }
+
+    private void createContextMenu() {
+        GridContextMenu<CvApplication> menu = grid.addContextMenu();
+        menu.addItem("Delete application", event -> {
+            Set<CvApplication> selectedItems = event.getGrid().getSelectedItems();
+            if (selectedItems.size() != 0) {
+                cvApplicationService.delete(event.getGrid().getSelectedItems());
+                gridListDataView.removeItems(selectedItems);
+            } else {
+                event.getItem().ifPresent(item -> {
+                    cvApplicationService.delete(item.getId());
+                    gridListDataView.removeItem(item);
+                });
+            }
+        });
     }
 
     private void createCvLinkColumn() {
@@ -111,6 +131,14 @@ public class DashboardView extends Div {
                 .setAutoWidth(true)
                 .setFlexGrow(1);
         ;
+    }
+
+    private void createQuestionColumn() {
+        cvLinkColumn = grid.addColumn(TemplateRenderer.<CvApplication>of("<div style='white-space:normal'>[[item.question]]</div>")
+                        .withProperty("question", CvApplication::getQuestion))
+                .setHeader("Request")
+                .setWidth("380.0")
+                .setFlexGrow(1);
     }
 
     private void createLinkedInLinkColumn() {
@@ -196,7 +224,8 @@ public class DashboardView extends Div {
         dateColumn = grid
                 .addColumn(new LocalDateTimeRenderer<>(CvApplication::getUpdatedAt,
                         DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")))
-                .setComparator(CvApplication::getUpdatedAt).setHeader("Date")
+                .setComparator(CvApplication::getUpdatedAt)
+                .setHeader("Date")
                 .setWidth("180px")
                 .setAutoWidth(true)
                 .setFlexGrow(1);

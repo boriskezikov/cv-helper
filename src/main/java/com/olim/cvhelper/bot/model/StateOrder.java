@@ -8,7 +8,8 @@ public enum StateOrder {
     USERNAME(1L),
     LINKEDIN_LINK(2L),
     CV_LINK(3L),
-    WAIT_FOR_HELP(4L);
+    QUESTION(4L),
+    WAIT_FOR_HELP(5L);
 
     private final Long order;
 
