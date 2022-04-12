@@ -52,7 +52,7 @@
     "@vaadin/notification": "23.0.4",
     "@vaadin/number-field": "23.0.4",
     "@vaadin/password-field": "23.0.4",
-    "@vaadin/polymer-legacy-adapter": "23.0.4",
+    "@vaadin/polymer-legacy-adapter": "23.0.3",
     "@vaadin/progress-bar": "23.0.4",
     "@vaadin/radio-group": "23.0.4",
     "@vaadin/rich-text-editor": "23.0.4",
@@ -298,7 +298,7 @@
       "@vaadin/notification": "23.0.4",
       "@vaadin/number-field": "23.0.4",
       "@vaadin/password-field": "23.0.4",
-      "@vaadin/polymer-legacy-adapter": "23.0.4",
+      "@vaadin/polymer-legacy-adapter": "23.0.3",
       "@vaadin/progress-bar": "23.0.4",
       "@vaadin/radio-group": "23.0.4",
       "@vaadin/rich-text-editor": "23.0.4",
@@ -376,6 +376,6 @@
       "workbox-core": "6.5.0",
       "workbox-precaching": "6.5.0"
     },
-    "hash": "7873b4eade9c0ee89de485b5588f752f4767ad67a006def7ed543e330d73d933"
+    "hash": "ff210f378926c6d2b2dd52237defb58dcc7c1fdc5443f7688255f18649d990d4"
   }
 }

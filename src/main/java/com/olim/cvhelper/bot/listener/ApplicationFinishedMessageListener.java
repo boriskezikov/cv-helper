@@ -34,6 +34,8 @@ public class ApplicationFinishedMessageListener implements ApplicationListener<A
         } catch (TelegramApiException e) {
             log.error("Error notifying chat_id {}, error_message:{}", sm.getChatId(), e.getMessage());
         }
-        stateRepository.deleteById(applicationFinished.getChatId());
+        if (stateRepository.existsById(applicationFinished.getChatId())) {
+            stateRepository.deleteById(applicationFinished.getChatId());
+        }
     }
 }
