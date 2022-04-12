@@ -89,6 +89,13 @@
 
         <dependency>
             <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-grid-flow</artifactId>
+            <version>23.0.3</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
             <!-- Replace artifactId with vaadin-core to use only free components -->
             <artifactId>vaadin</artifactId>
         </dependency>
@@ -232,6 +239,15 @@
                 </executions>
             </plugin>
         </plugins>
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>src/main/resources/</directory>-->
+<!--                <filtering>true</filtering>-->
+<!--                <includes>-->
+<!--                    <include>src/main/resources/META-INF/resources/vaadin/collaboration-engine/ce-license.json</include>-->
+<!--                </includes>-->
+<!--            </resource>-->
+<!--        </resources>-->
     </build>
 
     <profiles>

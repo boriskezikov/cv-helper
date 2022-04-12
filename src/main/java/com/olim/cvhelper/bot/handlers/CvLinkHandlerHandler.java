@@ -5,11 +5,10 @@ import com.olim.cvhelper.backoffice.entity.CvApplicationStatus;
 import com.olim.cvhelper.backoffice.service.CvApplicationService;
 import com.olim.cvhelper.backoffice.service.UserService;
 import com.olim.cvhelper.bot.config.BotState;
-import static com.olim.cvhelper.bot.util.TextConstants.DO_NOT_UNDERSTAND;
-import static com.olim.cvhelper.bot.util.TextConstants.WAIT_FOR_HELP;
 import com.olim.cvhelper.bot.model.State;
 import com.olim.cvhelper.bot.model.StateOrder;
 import com.olim.cvhelper.bot.repository.StateRepository;
+import static com.olim.cvhelper.bot.util.TextConstants.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -23,14 +22,9 @@ import java.util.Optional;
 @Component
 public class CvLinkHandlerHandler extends AbstractHandler {
 
-    private final CvApplicationService cvApplicationService;
-    private final UserService userService;
 
-
-    protected CvLinkHandlerHandler(StateRepository stateRepository, CvApplicationService cvApplicationService, UserService userService) {
+    protected CvLinkHandlerHandler(StateRepository stateRepository) {
         super(stateRepository);
-        this.cvApplicationService = cvApplicationService;
-        this.userService = userService;
     }
 
     @Override
@@ -50,24 +44,11 @@ public class CvLinkHandlerHandler extends AbstractHandler {
         if (stateOptional.isPresent()) {
             State state = stateOptional.get();
             state.getStateData().setCvLink(cvLink);
-            state.setStateId(StateOrder.WAIT_FOR_HELP.getOrder());
-            State finalState = stateRepository.save(state);
-            CvApplication cvApplication = toCvApplication(chatId, finalState);
-            cvApplicationService.update(cvApplication);
-            response(WAIT_FOR_HELP, chatId, absSender);
+            state.setStateId(StateOrder.QUESTION.getOrder());
+            stateRepository.save(state);
+            response(START_COMMAND_QUESTION, chatId, absSender);
         } else {
             throw new UnsupportedOperationException();
         }
-    }
-
-    private CvApplication toCvApplication(Long chatId, State finalState) {
-        return CvApplication.builder()
-                .cvLink(finalState.getStateData().getCvLink())
-                .linkedInLink(finalState.getStateData().getLinkedInLink())
-                .chatId(chatId)
-                .fullName(finalState.getStateData().getFullName())
-                .assignee(userService.pickRandom())
-                .telegramUsername(finalState.getStateData().getTelegramUsername())
-                .status(CvApplicationStatus.OPEN).build();
     }
 }

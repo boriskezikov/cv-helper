@@ -29,8 +29,8 @@ server:
 
 telegram:
   bot:
-    name: cv_helper_bot
-    token: 5115367582:AAEIQ4sDhCzKv7nNel18fUQf5sI2h43M4Xo
+    name: cvtest_bot
+    token: 5277446388:AAFvoT_kUSviZyVnb48nYhv9Qwo3OPfj_UQ
     admin: kezikoff
 
 admin:
