@@ -68,6 +68,7 @@ public class QuestionHandler extends AbstractHandler {
                 .assignee(userService.pickRandom())
                 .telegramUsername(finalState.getStateData().getTelegramUsername())
                 .question(finalState.getStateData().getQuestion())
+                .profession(finalState.getStateData().getProfession())
                 .status(CvApplicationStatus.OPEN).build();
     }
 }

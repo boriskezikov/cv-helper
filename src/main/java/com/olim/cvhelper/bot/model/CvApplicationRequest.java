@@ -24,4 +24,6 @@ public class CvApplicationRequest implements Serializable {
 
     private String question;
 
+    private String profession;
+
 }

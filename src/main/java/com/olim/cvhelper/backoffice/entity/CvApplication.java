@@ -31,6 +31,8 @@ public class CvApplication extends AbstractEntity {
 
     private String question;
 
+    private String profession;
+
     private Long chatId;
 
     @Enumerated(EnumType.STRING)

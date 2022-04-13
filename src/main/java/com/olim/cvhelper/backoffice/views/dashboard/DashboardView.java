@@ -17,6 +17,7 @@ import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -30,6 +31,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import liquibase.pro.packaged.L;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.security.RolesAllowed;
@@ -58,6 +60,8 @@ public class DashboardView extends Div {
     private Grid.Column<CvApplication> questionField;
     private Grid.Column<CvApplication> assigneeColumn;
     private Grid.Column<CvApplication> dateColumn;
+    private Grid.Column<CvApplication> professionColumn;
+
 
     private final CvApplicationService cvApplicationService;
     private final UserService userService;
@@ -91,6 +95,7 @@ public class DashboardView extends Div {
 
     private void addColumnsToGrid() {
         createClientColumn();
+        createProfessionColumn();
         createStatusColumn();
         createCvLinkColumn();
         createLinkedInLinkColumn();
@@ -137,7 +142,7 @@ public class DashboardView extends Div {
         cvLinkColumn = grid.addColumn(TemplateRenderer.<CvApplication>of("<div style='white-space:normal'>[[item.question]]</div>")
                         .withProperty("question", CvApplication::getQuestion))
                 .setHeader("Request")
-                .setWidth("380.0")
+                .setWidth("200.0")
                 .setFlexGrow(1);
     }
 
@@ -169,6 +174,20 @@ public class DashboardView extends Div {
                     return hl;
                 }))
                 .setComparator(CvApplication::getFullName).setHeader("Telegram")
+                .setAutoWidth(true)
+                .setFlexGrow(1);
+        ;
+    }
+
+    private void createProfessionColumn() {
+        professionColumn = grid.addColumn(new ComponentRenderer<>(cvApplication -> {
+                    HorizontalLayout hl = new HorizontalLayout();
+                    hl.setAlignItems(Alignment.CENTER);
+                    Label label = new Label(cvApplication.getProfession());
+                    hl.add(label);
+                    return hl;
+                }))
+                .setComparator(CvApplication::getProfession).setHeader("Specialization")
                 .setAutoWidth(true)
                 .setFlexGrow(1);
         ;

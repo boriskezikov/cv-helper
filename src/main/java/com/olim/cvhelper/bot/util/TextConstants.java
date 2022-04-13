@@ -11,6 +11,8 @@ public enum TextConstants {
 
     START_COMMAND_USERNAME("Привет\uD83D\uDE43 Я помогу провести валидацию твоего резюме. Как тебя зовут?", ParseMode.HTML),
 
+    START_COMMAND_PROFESSION("Выбери свое профессиональное направление из перечисленных", ParseMode.HTML),
+
     START_COMMAND_LINKEDIN("Приятно познакомиться\uD83D\uDE48\n\nА тебе удалось посмотреть наш гайд по составлению профиля в LinkedIn?  " +
             "Если нет, переходи по [ссылке](https://glib-suit-0c7.notion.site/LinkedIn-06d38889e47640069e7e17090e2910ad)\n" +
             "Убедись, что у тебя все красиво\uD83D\uDCA5 и присылай ссылку на свой профиль! ", ParseMode.MARKDOWNV2),

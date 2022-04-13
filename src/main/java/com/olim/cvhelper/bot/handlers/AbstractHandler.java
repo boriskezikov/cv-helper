@@ -5,6 +5,7 @@ import com.olim.cvhelper.bot.util.TextConstants;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -32,6 +33,16 @@ public abstract class AbstractHandler {
         sendMessage.setParseMode(text.getParseMode());
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(chatId.toString());
+        absSender.execute(sendMessage);
+    }
+
+    protected void response(TextConstants text, Long chatId, AbsSender absSender, ReplyKeyboard replyKeyboard) throws TelegramApiException {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(text.getText());
+        sendMessage.setParseMode(text.getParseMode());
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(chatId.toString());
+        sendMessage.setReplyMarkup(replyKeyboard);
         absSender.execute(sendMessage);
     }
 

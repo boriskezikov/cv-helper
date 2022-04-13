@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -38,7 +39,17 @@ public class CvApplicationBot extends TelegramLongPollingCommandBot {
     @SneakyThrows
     @Override
     public void processNonCommandUpdate(Update update) {
-        Message message = update.getMessage();
+        Message message;
+        CallbackQuery callbackQuery = update.getCallbackQuery();
+        if (update.getMessage() != null) {
+            message = update.getMessage();
+        } else if (update.getCallbackQuery() != null) {
+            message = callbackQuery.getMessage();
+            message.setText(callbackQuery.getData());
+        }
+        else {
+            throw new IllegalStateException("Illegal data access request!");
+        }
         Long chatId = message.getChatId();
         Optional<State> userState = stateRepository.findById(chatId);
         AbstractHandler stateHandler;
@@ -49,6 +60,7 @@ public class CvApplicationBot extends TelegramLongPollingCommandBot {
             stateHandler = handlerOrchestrator.getStateHandler(USERNAME.getOrder());
         }
         stateHandler.handle(this, message);
+
     }
 
     @Override
