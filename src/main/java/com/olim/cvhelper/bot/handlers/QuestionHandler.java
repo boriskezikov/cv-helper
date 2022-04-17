@@ -65,7 +65,6 @@ public class QuestionHandler extends AbstractHandler {
                 .linkedInLink(finalState.getStateData().getLinkedInLink())
                 .chatId(chatId)
                 .fullName(finalState.getStateData().getFullName())
-                .assignee(userService.pickRandom())
                 .telegramUsername(finalState.getStateData().getTelegramUsername())
                 .question(finalState.getStateData().getQuestion())
                 .profession(finalState.getStateData().getProfession())

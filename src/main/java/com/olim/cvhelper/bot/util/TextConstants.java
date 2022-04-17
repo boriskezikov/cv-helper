@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.ParseMode;
 public enum TextConstants {
 
 
-    START_COMMAND_USERNAME("Привет\uD83D\uDE43 Я помогу провести валидацию твоего резюме. Как тебя зовут?", ParseMode.HTML),
+    START_COMMAND_USERNAME("Давай начнем\uD83D\uDE43 Как тебя зовут?", ParseMode.HTML),
 
     START_COMMAND_PROFESSION("Выбери свое профессиональное направление из перечисленных", ParseMode.HTML),
 

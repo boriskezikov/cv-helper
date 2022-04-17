@@ -31,7 +31,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import liquibase.pro.packaged.L;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.security.RolesAllowed;
@@ -129,6 +128,7 @@ public class DashboardView extends Div {
                     anchor.setHref(cvApplication.getCvLink());
                     anchor.setText(cvApplication.getCvLink());
                     anchor.setClassName("Cv_link");
+                    anchor.setTarget("_blank");
                     hl.add(anchor);
                     return hl;
                 }))
@@ -154,6 +154,7 @@ public class DashboardView extends Div {
                     anchor.setHref(cvApplication.getLinkedInLink());
                     anchor.setText(cvApplication.getLinkedInLink());
                     anchor.setClassName("LinkedIn_link");
+                    anchor.setTarget("_blank");
                     hl.add(anchor);
                     return hl;
                 }))
@@ -170,6 +171,7 @@ public class DashboardView extends Div {
                     anchor.setHref("https://t.me/" + cvApplication.getTelegramUsername());
                     anchor.setText("Click me");
                     anchor.setClassName("Telegram_username");
+                    anchor.setTarget("_blank");
                     hl.add(anchor);
                     return hl;
                 }))
@@ -210,7 +212,12 @@ public class DashboardView extends Div {
     private void createAssigneeColumn() {
         List<User> admins = userService.loadAll();
         assigneeColumn = grid.addEditColumn((CvApplication::getAssignee),
-                        new ComponentRenderer<>(cvApplication -> new Span(cvApplication.getAssignee().getName())))
+                        new ComponentRenderer<>(cvApplication -> {
+                            var name = cvApplication.getAssignee() != null
+                                    ? cvApplication.getAssignee().getName()
+                                    : null;
+                            return new Span(name);
+                        }))
                 .select((item, newValue) -> {
                     User user = userService.get(newValue);
                     item.setAssignee(user);
