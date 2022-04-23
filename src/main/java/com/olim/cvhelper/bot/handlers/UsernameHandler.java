@@ -22,11 +22,11 @@ import java.util.List;
 @Slf4j
 @BotState(orderId = StateOrder.USERNAME)
 @Component
-public class FullNameHandlerHandler extends AbstractHandler {
+public class UsernameHandler extends AbstractHandler {
 
 
     @Autowired
-    public FullNameHandlerHandler(StateRepository stateRepository) {
+    public UsernameHandler(StateRepository stateRepository) {
         super(stateRepository);
     }
 
@@ -53,7 +53,7 @@ public class FullNameHandlerHandler extends AbstractHandler {
                 .userId(chatId)
                 .stateData(cvApplicationRequest).build();
         stateRepository.save(state);
-        response(START_COMMAND_PROFESSION, chatId, absSender, buildInlineKeyboard());
+        response(START_COMMAND_PROFESSION, chatId, absSender);
     }
 
 
@@ -61,22 +61,6 @@ public class FullNameHandlerHandler extends AbstractHandler {
         User user = msg.getFrom();
         String userName = user.getUserName();
         return (userName != null) ? userName : String.format("%s %s", user.getLastName(), user.getFirstName());
-    }
-
-    private InlineKeyboardMarkup buildInlineKeyboard() {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        var button1 = inlineKeyboardButton("Technical", "Technical");
-        var button2 = inlineKeyboardButton("Non technical", "Non technical");
-        var button3 = inlineKeyboardButton("Portfolio", "Portfolio");
-        inlineKeyboardMarkup.setKeyboard(List.of(List.of(button1, button2), List.of(button3)));
-        return inlineKeyboardMarkup;
-    }
-
-    private InlineKeyboardButton inlineKeyboardButton(String text, String callbackData) {
-        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-        inlineKeyboardButton.setText(text);
-        inlineKeyboardButton.setCallbackData(callbackData);
-        return inlineKeyboardButton;
     }
 
 }
